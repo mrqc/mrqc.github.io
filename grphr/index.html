@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/cytoscape.min.js"></script>
+    <script src="js/cytoscape-edgehandles.js"></script>
+    <script src="js/cytoscape-cxtmenu.js"></script>
+    <script src="js/cola.js"></script>
+    <script src="js/cytoscape-cola.js"></script>
+    <script src="js/cytoscape-undo-redo.js"></script>
+    <script src="js/CytoscapeWrapper.js"></script>
+</head>
+<body>
+    <div id="cytoscape"></div>
+    <script>
+      var cytoscapeWrapper = new CytoscapeWrapper();
+      cytoscapeWrapper.initCytoscape();
+      cytoscapeWrapper.addNode("node-" + cytoscapeWrapper.nodeIndex, {});
+    </script>
+</body>
+</html>
