@@ -10,13 +10,20 @@
     <script src="js/cytoscape-cola.js"></script>
     <script src="js/cytoscape-undo-redo.js"></script>
     <script src="js/CytoscapeWrapper.js"></script>
+    <script src="js/fileIntersect.js"></script>
 </head>
 <body>
     <div id="cytoscape"></div>
+    <div id="toolbar">
+      <p>import csv file (one node per line, first column is id):<br>
+        <input type='file' accept='text/plain' onchange='openFile(event)'><br>
+        <a href="text.csv">see example file</a></p>
+      <p>(i) tap right mouse button on a node and hold for menu<br>
+        (ii) use red dot to create new edges</p>
+    </div>
     <script>
       var cytoscapeWrapper = new CytoscapeWrapper();
       cytoscapeWrapper.initCytoscape();
-      cytoscapeWrapper.addNode("node-" + cytoscapeWrapper.nodeIndex, {});
     </script>
 </body>
 </html>

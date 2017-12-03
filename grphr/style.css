@@ -5,3 +5,17 @@
   left: 0px;
   top: 0px;
 }
+#toolbar {
+  padding: 10px;
+  top: 0px; 
+  right: 0px; 
+  bottom: 0px;
+  width: 200px; 
+  background-color: #EEEEEE;
+  z-index: 9999;
+  position: fixed;
+}
+body {
+  padding: 0px;
+  margin: 0px;
+}

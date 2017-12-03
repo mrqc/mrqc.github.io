@@ -15,7 +15,9 @@ function CytoscapeWrapper() {
           'text-outline-width': 0,
           'font-size': 15,
           'font-family': 'Tahoma',
-          'border-color': '#000000'
+          'border-color': '#000000',
+          'width': 50,
+          'height' : 50
         }).selector('node:unselected').css({
           'border-color': '#000000',
           'border-width': '1'
@@ -25,7 +27,6 @@ function CytoscapeWrapper() {
         }).selector('edge').css({
           'label': 'data(label)',
           'curve-style': 'bezier',
-          'target-arrow-shape': 'triangle',
           'font-size': 8
         }).selector('.faded').css({
           'opacity': 0.25,
@@ -59,9 +60,6 @@ function CytoscapeWrapper() {
       edgeType: function(sourceNode, targetNode) {
         return "flat";
       },
-      complete: function(sourceNode, targetNode, addedEles) {
-        cytoscapeWrapper.cytoEdgeHandler.disableDrawMode();
-      }
     });
     this.cyto.cxtmenu({
       selector: 'node',
@@ -83,13 +81,6 @@ function CytoscapeWrapper() {
             cytoscapeWrapper.addNode(newNodeId, {});
             cytoscapeWrapper.addEdge(ele.id(), newNodeId, "");
             cytoscapeWrapper.doLayout();
-          }
-        },
-        {
-          content: '-> connect',
-          select: function(ele) {
-	    cytoscapeWrapper.cytoEdgeHandler.enableDrawMode();
-	    cytoscapeWrapper.cytoEdgeHandler.start(ele);
           }
         },
         {
@@ -127,7 +118,7 @@ function CytoscapeWrapper() {
   };
   this.layoutOptions = {
     name: "cola",
-    directed: true,
+    directed: false,
     nodeDimensionsIncludeLabels: true,
     refresh: 1,
     maxSimulationTime: 500,
