@@ -60,7 +60,9 @@ function CytoscapeWrapper() {
     this.cytoEdgeHandler = this.cyto.edgehandles({
       edgeType: function(sourceNode, targetNode) {
         return "flat";
-      },
+      }, complete: function(sourceNode, targetNode, addedEles) {
+        cytoscapeWrapper.doLayout();
+      }
     });
     this.cyto.cxtmenu({
       selector: 'node',
