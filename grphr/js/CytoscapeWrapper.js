@@ -110,7 +110,7 @@ function CytoscapeWrapper() {
         // click on edge
       }
     });
-    $("#newNode").click(function() {
+    $("#createNewNode").click(function() {
       var newNodeId = "node-" + cytoscapeWrapper.nodeIndex;
       cytoscapeWrapper.addNode(newNodeId, {});
       cytoscapeWrapper.doLayout();
