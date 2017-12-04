@@ -120,7 +120,7 @@ function CytoscapeWrapper() {
   };
   this.layoutOptions = {
     name: "cola",
-    directed: false,
+    directed: true,
     nodeDimensionsIncludeLabels: true,
     refresh: 1,
     maxSimulationTime: 500,
