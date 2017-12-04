@@ -26,6 +26,7 @@ function CytoscapeWrapper() {
           'border-width': '3'
         }).selector('edge').css({
           'label': 'data(label)',
+          'target-arrow-shape': 'triangle',
           'curve-style': 'bezier',
           'font-size': 8
         }).selector('.faded').css({
@@ -87,6 +88,7 @@ function CytoscapeWrapper() {
           content: 'delete',
           select: function(ele) {
             cytoscapeWrapper.cyto.remove(ele);
+            cytoscapeWrapper.doLayout();
           }
         },
         {
