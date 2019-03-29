@@ -65,14 +65,23 @@
         <div class="container" id="client-1">
           <!--<div id="block-1" class="row">
             <div class="col-2"><input type="text" value="00000000" id="block-1-starthash" class="form-control hash"></div>
-            <div class="col-1 box"><input type="text" value="Horst" class="form-control hash"></div>
-            <div class="col-1 box"><input type="text" value="Friedl" class="form-control hash"></div>
-            <div class="col-1 box"><input type="text" value="100" class="form-control hash"></div>
-            <div class="col-1 box"><input type="text" value="Horst" class="form-control hash"></div>
-            <div class="col-1 box"><input type="text" value="Friedl" class="form-control hash"></div>
-            <div class="col-1 box"><input type="text" value="100" class="form-control hash"></div>
+            <div class="col-2"><input type="text" value="00000000" id="block-1-markleroot" class="form-control hash"></div>
+            <div class="col-2"><input type="text" value="2019-01-01 12:12" id="block-1-timestamp" class="form-control hash"></div>
             <div class="col-2"><input type="text" value="nonce" id="block-1-nonce" class="form-control"></div>
+            <div class="col-1"></div>
             <div class="col-2"><input type="text" value="hash" id="block-1-endhash" class="form-control"></div>
+          </div>-->
+          <!--<div id="block-1-content" class="row">
+            <div class="col-2"></div>
+            <div class="col-1"><input type="text" value="Horst" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="Friedl" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="100" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="Horst" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="Friedl" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="100" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="Horst" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="Friedl" class="form-control merkleroot"></div>
+            <div class="col-1"><input type="text" value="100" class="form-control merkleroot"></div>
           </div>-->
         </div>
       </div>
@@ -86,23 +95,28 @@
   <script>
     var blockHeight = 0;
     var txCountInCurrentBlock = 0;
+    var maxTx = 3;
     $(function() {
       $("#createTransaction").click(function() {
         if (blockHeight == 0) {
           blockHeight++;
           createBlockContainer();
-        } else if (txCountInCurrentBlock == 2) {
+        } else if (txCountInCurrentBlock == maxTx) {
           findNonceForLastBlock();
           txCountInCurrentBlock = 0;
           blockHeight++;
           createBlockContainer();
         }
-        if (txCountInCurrentBlock < 2) {
-          $(
-            '<div class="col-1 box"><input type="text" value="' + $("#from").val() + '" class="form-control hash tx-control update-control"></div>' +
-            '<div class="col-1 box"><input type="text" value="' + $("#to").val() + '" class="form-control hash tx-control update-control"></div>' +
-            '<div class="col-1 box"><input type="text" value="' + $("#value").val() + '" class="form-control hash tx-control update-control"></div>'
-          ).insertBefore("#client-1 #block-" + blockHeight + " #block-" + blockHeight + "-last-element");
+        if (txCountInCurrentBlock < maxTx) {
+          $("#block-" + blockHeight + "-content").append(
+            '<div class="col-1"><input type="text" value="' + $("#from").val() + '" class="form-control merklerooti update-control"></div>' + 
+            '<div class="col-1"><input type="text" value="' + $("#to").val() + '" class="form-control merkleroot update-control"></div>' +
+            '<div class="col-1"><input type="text" value="' + $("#value").val() + '" class="form-control merkleroot update-control"></div>'
+          );
+          calcMerkleRootForBlockHeight(blockHeight);
+          /*'<div class="col-1 box"><input type="text" value="' + $("#from").val() + '" class="form-control hash tx-control update-control"></div>' +
+          '<div class="col-1 box"><input type="text" value="' + $("#to").val() + '" class="form-control hash tx-control update-control"></div>' +
+          '<div class="col-1 box"><input type="text" value="' + $("#value").val() + '" class="form-control hash tx-control update-control"></div>'*/
           /*$("#from").val("");
           $("#to").val("");
           $("#value").val("");*/
@@ -113,14 +127,29 @@
         });
       });
     });
+    function calcMerkleRootForBlockHeight(blockHeightParam) {
+      var merkleRootData = "";
+      $("#block-" + blockHeightParam + "-content .merkleroot").each(function(index, element) {
+        merkleRootData += $(this).val();
+      });
+      $("#block-" + blockHeightParam + "-merkleroot").val(md5(merkleRootData));
+    }
     function createBlockContainer() {
       var previousHash = (blockHeight == 1) ? "00000000" : $("#block-" + (blockHeight - 1) + "-endhash").val();
       $("#client-1").append(
-        '<div id="block-' + blockHeight + '" class="row">' + 
+        '<h2>Block ' + blockHeight + '</h2>' +
+        '<div id="block-' + blockHeight + '" class="row">' +
         '<div class="col-2"><input type="text" value="' + previousHash + '" id="block-' + blockHeight + '-starthash" class="form-control hash alert-box"></div>' +
-        '<div class="col-2" id="block-' + blockHeight + '-last-element"><input type="text" value="nonce" id="block-' + blockHeight + '-nonce" class="form-control update-control"></div>' +
+        '<div class="col-2"><input type="text" value="" id="block-' + blockHeight + '-merkleroot" class="form-control hash"></div>' +
+        '<div class="col-2"><input type="text" value="' + (new Date()).toString() + '" id="block-' + blockHeight + '-timestamp" class="form-control hash"></div>' +
+        '<div class="col-2"><input type="text" value="nonce" id="block-' + blockHeight + '-nonce" class="form-control update-control"></div>' +
+        '<div class="col-1"></div>' +
         '<div class="col-2"><input type="text" value="hash" id="block-' + blockHeight + '-endhash" class="form-control update-control alert-box"></div>' +
-        '</div>'
+        '</div>' + 
+        '<div id="block-' + blockHeight + '-content" class="row">' +
+        '<div class="col-2"></div>' +
+        '</div>' +
+        '<div>&nbsp;</div>'
       );
     }
     function findNonceForLastBlock() {
@@ -156,6 +185,7 @@
       for (var blockIndex = 1; blockIndex < blockHeight; blockIndex++) {
         if ($("#block-" + blockIndex).length) {
           var dataToHash = ""
+          calcMerkleRootForBlockHeight(blockIndex);
           $("#block-" + blockIndex + " .hash").each(function(index, element) {
             dataToHash = dataToHash + $(this).val();
           });
