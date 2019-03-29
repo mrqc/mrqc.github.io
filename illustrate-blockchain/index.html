@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Illustrate Blockchain</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .box {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .tx-control {
+      background-color: #EFFFEF !important;
+    }
+    .blockchain-alert {
+      background-color: #FF9999 !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">Illustrate Blockchain</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <h1 class="mt-5">Illustrate Blockchain</h1>
+        <p class="lead">Illustrates how the blockchain works!</p>
+        Difficulty: <input type="text" value="2" id="difficulty">
+        <p>&nbsp;</p>
+        <form>
+          Von: <input type="text" id="from" value="Erhard">
+          An: <input type="text" id="to" value="Klemens">
+          Wert: <input type="text" id="value" value="100">
+          <button type="button" class="btn btn-primary" id="createTransaction">Erstellen</button>
+        </form>
+        <p>&nbsp;</p>
+        <div class="container" id="client-1">
+          <!--<div id="block-1" class="row">
+            <div class="col-2"><input type="text" value="00000000" id="block-1-starthash" class="form-control hash"></div>
+            <div class="col-1 box"><input type="text" value="Horst" class="form-control hash"></div>
+            <div class="col-1 box"><input type="text" value="Friedl" class="form-control hash"></div>
+            <div class="col-1 box"><input type="text" value="100" class="form-control hash"></div>
+            <div class="col-1 box"><input type="text" value="Horst" class="form-control hash"></div>
+            <div class="col-1 box"><input type="text" value="Friedl" class="form-control hash"></div>
+            <div class="col-1 box"><input type="text" value="100" class="form-control hash"></div>
+            <div class="col-2"><input type="text" value="nonce" id="block-1-nonce" class="form-control"></div>
+            <div class="col-2"><input type="text" value="hash" id="block-1-endhash" class="form-control"></div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="md5.js"></script>
+  <script>
+    var blockHeight = 0;
+    var txCountInCurrentBlock = 0;
+    $(function() {
+      $("#createTransaction").click(function() {
+        if (blockHeight == 0) {
+          blockHeight++;
+          createBlockContainer();
+        } else if (txCountInCurrentBlock == 2) {
+          findNonceForLastBlock();
+          txCountInCurrentBlock = 0;
+          blockHeight++;
+          createBlockContainer();
+        }
+        if (txCountInCurrentBlock < 2) {
+          $(
+            '<div class="col-1 box"><input type="text" value="' + $("#from").val() + '" class="form-control hash tx-control update-control"></div>' +
+            '<div class="col-1 box"><input type="text" value="' + $("#to").val() + '" class="form-control hash tx-control update-control"></div>' +
+            '<div class="col-1 box"><input type="text" value="' + $("#value").val() + '" class="form-control hash tx-control update-control"></div>'
+          ).insertBefore("#client-1 #block-" + blockHeight + " #block-" + blockHeight + "-last-element");
+          /*$("#from").val("");
+          $("#to").val("");
+          $("#value").val("");*/
+          txCountInCurrentBlock++;
+        }
+        $(".update-control").keyup(function() {
+          updateGui();
+        });
+      });
+    });
+    function createBlockContainer() {
+      var previousHash = (blockHeight == 1) ? "00000000" : $("#block-" + (blockHeight - 1) + "-endhash").val();
+      $("#client-1").append(
+        '<div id="block-' + blockHeight + '" class="row">' + 
+        '<div class="col-2"><input type="text" value="' + previousHash + '" id="block-' + blockHeight + '-starthash" class="form-control hash alert-box"></div>' +
+        '<div class="col-2" id="block-' + blockHeight + '-last-element"><input type="text" value="nonce" id="block-' + blockHeight + '-nonce" class="form-control update-control"></div>' +
+        '<div class="col-2"><input type="text" value="hash" id="block-' + blockHeight + '-endhash" class="form-control update-control alert-box"></div>' +
+        '</div>'
+      );
+    }
+    function findNonceForLastBlock() {
+      var dataToHash = ""
+      $("#block-" + blockHeight + " .hash").each(function(index, element) {
+        dataToHash = dataToHash + $(this).val();
+      });
+      var startTime = new Date();
+      var nonce = 0;
+      for (; true; nonce++) {
+        var md5Sum = md5(dataToHash + nonce);
+        var difficulty = $("#difficulty").val();
+        if (md5Sum.substr(0, difficulty) == generateZeroString()) {
+          $("#block-" + blockHeight + "-nonce").val(nonce);
+          $("#block-" + blockHeight + "-endhash").val(md5Sum);
+          break;
+        }
+      }
+      var endTime = new Date();
+      var timeDiff = (endTime - startTime) / 1000.0;
+      alert("Finding the nonce (" + nonce + ") took " + (timeDiff) + " seconds");
+    }
+    function generateZeroString() {
+      var len = $("#difficulty").val();
+      var ret = "";
+      for (var index = 0; index < len; index++) {
+        ret += "0";
+      }
+      return ret;
+    }
+    function updateGui() {
+      $(".alert-box").removeClass("blockchain-alert");
+      for (var blockIndex = 1; blockIndex < blockHeight; blockIndex++) {
+        if ($("#block-" + blockIndex).length) {
+          var dataToHash = ""
+          $("#block-" + blockIndex + " .hash").each(function(index, element) {
+            dataToHash = dataToHash + $(this).val();
+          });
+          $("#block-" + blockIndex + "-endhash").val(md5(dataToHash + $("#block-" + blockIndex + "-nonce").val()));
+          if (blockIndex < blockHeight) {
+            var endHashCur = $("#block-" + blockIndex + "-endhash").val();
+            var startHashNext = $("#block-" + (blockIndex + 1) + "-starthash").val()
+            if (endHashCur != startHashNext) {
+              $("#block-" + blockIndex + "-endhash").addClass("blockchain-alert");
+              $("#block-" + (blockIndex + 1) + "-starthash").addClass("blockchain-alert");
+            }
+          }
+        } else {
+          break;
+        }
+      }
+    }
+  </script>
+
+</body>
+
+</html>
