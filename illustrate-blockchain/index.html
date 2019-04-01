@@ -53,36 +53,38 @@
       <div class="col-lg-12 text-center">
         <h1 class="mt-5">Illustrate Blockchain</h1>
         <p class="lead">Illustrates how the blockchain works!</p>
-        Difficulty: <input type="text" value="2" id="difficulty">
+        Difficulty: <input type="text" value="3" id="difficulty">
         <p>&nbsp;</p>
         <form>
-          Von: <input type="text" id="from" value="Erhard">
-          An: <input type="text" id="to" value="Klemens">
-          Wert: <input type="text" id="value" value="100">
-          <button type="button" class="btn btn-primary" id="createTransaction">Erstellen</button>
+          From: <input type="text" id="from" value="Alice">
+          To: <input type="text" id="to" value="Bobe">
+          Value: <input type="text" id="value" value="10">
+          <button type="button" class="btn btn-primary" id="createTransaction">Create Transaction</button>
         </form>
         <p>&nbsp;</p>
         <div class="container" id="client-1">
-          <!--<div id="block-1" class="row">
-            <div class="col-2"><input type="text" value="00000000" id="block-1-starthash" class="form-control hash"></div>
-            <div class="col-2"><input type="text" value="00000000" id="block-1-markleroot" class="form-control hash"></div>
-            <div class="col-2"><input type="text" value="2019-01-01 12:12" id="block-1-timestamp" class="form-control hash"></div>
-            <div class="col-2"><input type="text" value="nonce" id="block-1-nonce" class="form-control"></div>
+          <h2>Block Illustration</h2>
+          <div id="block-0" class="row">
+            <div class="col-2"><input type="text" value="Prev. Hash" id="block-0-starthash" class="form-control hash" disabled></div>
+            <div class="col-2"><input type="text" value="Merkleroot" id="block-0-markleroot" class="form-control hash" disabled></div>
+            <div class="col-2"><input type="text" value="Timestamp" id="block-0-timestamp" class="form-control hash" disabled></div>
+            <div class="col-2"><input type="text" value="Nonce" id="block-0-nonce" class="form-control" disabled></div>
             <div class="col-1"></div>
-            <div class="col-2"><input type="text" value="hash" id="block-1-endhash" class="form-control"></div>
-          </div>-->
-          <!--<div id="block-1-content" class="row">
-            <div class="col-2"></div>
-            <div class="col-1"><input type="text" value="Horst" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="Friedl" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="100" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="Horst" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="Friedl" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="100" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="Horst" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="Friedl" class="form-control merkleroot"></div>
-            <div class="col-1"><input type="text" value="100" class="form-control merkleroot"></div>
-          </div>-->
+            <div class="col-2"><input type="text" value="Block Hash" id="block-0-endhash" class="form-control" disabled></div>
+          </div>
+          <div id="block-0-content" class="row">
+            <div class="col-2">Transactions:</div>
+            <div class="col-1"><input type="text" value="From" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="To" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="Value" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="From" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="To" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="Value" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="From" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="To" class="form-control merkleroot" disabled></div>
+            <div class="col-1"><input type="text" value="Value" class="form-control merkleroot" disabled></div>
+          </div>
+          <div>&nbsp;</div>
         </div>
       </div>
     </div>
@@ -109,7 +111,7 @@
         }
         if (txCountInCurrentBlock < maxTx) {
           $("#block-" + blockHeight + "-content").append(
-            '<div class="col-1"><input type="text" value="' + $("#from").val() + '" class="form-control merklerooti update-control"></div>' + 
+            '<div class="col-1"><input type="text" value="' + $("#from").val() + '" class="form-control merkleroot update-control"></div>' + 
             '<div class="col-1"><input type="text" value="' + $("#to").val() + '" class="form-control merkleroot update-control"></div>' +
             '<div class="col-1"><input type="text" value="' + $("#value").val() + '" class="form-control merkleroot update-control"></div>'
           );
