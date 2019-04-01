@@ -121,9 +121,7 @@
           $("#value").val("");*/
           txCountInCurrentBlock++;
         }
-        $(".update-control").keyup(function() {
-          updateGui();
-        });
+        updateRefresh();
       });
     });
     function calcMerkleRootForBlockHeight(blockHeightParam) {
@@ -150,6 +148,12 @@
         '</div>' +
         '<div>&nbsp;</div>'
       );
+      updateRefresh();
+    }
+    function updateRefresh() {
+      $(".update-control").keyup(function() {
+        updateGui();
+      });
     }
     function findNonceForLastBlock() {
       var dataToHash = ""
