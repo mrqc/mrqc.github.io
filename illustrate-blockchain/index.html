@@ -137,11 +137,11 @@
         '<h2>Block ' + blockHeight + '</h2>' +
         '<div id="block-' + blockHeight + '" class="row">' +
         '<div class="col-2"><input type="text" value="' + previousHash + '" id="block-' + blockHeight + '-starthash" class="form-control hash alert-box update-control"></div>' +
-        '<div class="col-2"><input type="text" value="" id="block-' + blockHeight + '-merkleroot" class="form-control hash update-control"></div>' +
+        '<div class="col-2"><input type="text" value="" id="block-' + blockHeight + '-merkleroot" class="form-control hash update-control" disabled></div>' +
         '<div class="col-2"><input type="text" value="' + (new Date()).toString() + '" id="block-' + blockHeight + '-timestamp" class="form-control hash update-control"></div>' +
         '<div class="col-2"><input type="text" value="nonce" id="block-' + blockHeight + '-nonce" class="form-control update-control"></div>' +
         '<div class="col-1"></div>' +
-        '<div class="col-2"><input type="text" value="hash" id="block-' + blockHeight + '-endhash" class="form-control update-control alert-box"></div>' +
+        '<div class="col-2"><input type="text" value="hash" id="block-' + blockHeight + '-endhash" class="form-control alert-box" disabled></div>' +
         '</div>' + 
         '<div id="block-' + blockHeight + '-content" class="row">' +
         '<div class="col-2"></div>' +
