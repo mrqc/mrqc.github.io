@@ -137,7 +137,7 @@
         '<h2>Block ' + blockHeight + '</h2>' +
         '<div id="block-' + blockHeight + '" class="row">' +
         '<div class="col-2"><input type="text" value="' + previousHash + '" id="block-' + blockHeight + '-starthash" class="form-control hash alert-box update-control"></div>' +
-        '<div class="col-2"><input type="text" value="" id="block-' + blockHeight + '-merkleroot" class="form-control hash update-control" disabled></div>' +
+        '<div class="col-2"><input type="text" value="" id="block-' + blockHeight + '-merkleroot" class="form-control hash update-control"></div>' +
         '<div class="col-2"><input type="text" value="' + (new Date()).toString() + '" id="block-' + blockHeight + '-timestamp" class="form-control hash update-control"></div>' +
         '<div class="col-2"><input type="text" value="nonce" id="block-' + blockHeight + '-nonce" class="form-control update-control"></div>' +
         '<div class="col-1"></div>' +
@@ -152,7 +152,15 @@
     }
     function updateRefresh() {
       $(".update-control").keyup(function() {
-        updateGui();
+        var eleId = $(this).attr("id");
+        if (eleId == undefined) {
+          eleId = "";
+        }
+        if (eleId.endsWith("-merkleroot")) {
+          updateGui(false);
+        } else {
+          updateGui(true);
+        }
       });
     }
     function findNonceForLastBlock() {
@@ -183,12 +191,14 @@
       }
       return ret;
     }
-    function updateGui() {
+    function updateGui(updateMerkleRoot) {
       $(".alert-box").removeClass("blockchain-alert");
       for (var blockIndex = 1; blockIndex < blockHeight; blockIndex++) {
         if ($("#block-" + blockIndex).length) {
           var dataToHash = ""
-          calcMerkleRootForBlockHeight(blockIndex);
+          if (updateMerkleRoot) {
+            calcMerkleRootForBlockHeight(blockIndex);
+          }
           $("#block-" + blockIndex + " .hash").each(function(index, element) {
             dataToHash = dataToHash + $(this).val();
           });
